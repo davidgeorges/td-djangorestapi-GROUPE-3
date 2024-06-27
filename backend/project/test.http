@@ -1,0 +1,103 @@
+###
+### Authentication
+###
+
+# Request a new JWT token
+GET http://localhost:8000/api/getToken/
+
+###
+### Researcher Endpoints
+###
+
+# List all researchers
+GET http://localhost:8000/api/chercheurs/
+
+# Get a specific researcher (replace `{researcher_id}` with an actual ID)
+GET http://localhost:8000/api/chercheurs/{researcher_id}/
+
+# Create a new researcher
+POST http://localhost:8000/api/chercheurs/
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "specialty": "Data Science"
+}
+
+# Update an existing researcher (replace `{researcher_id}` with an actual ID)
+PUT http://localhost:8000/api/chercheurs/{researcher_id}/
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "specialty": "Machine Learning"
+}
+
+# Delete an existing researcher (replace `{researcher_id}` with an actual ID)
+DELETE http://localhost:8000/api/chercheurs/{researcher_id}/
+
+###
+### Research Project Endpoints
+###
+
+# List all research projects
+GET http://localhost:8000/api/projets/
+
+# Get a specific research project (replace `{project_id}` with an actual ID)
+GET http://localhost:8000/api/projets/{project_id}/
+
+# Create a new research project
+POST http://localhost:8000/api/projets/
+Content-Type: application/json
+
+{
+  "title": "AI in Healthcare",
+  "description": "Using AI to improve healthcare services"
+}
+
+# Update an existing research project (replace `{project_id}` with an actual ID)
+PUT http://localhost:8000/api/projets/{project_id}/
+Content-Type: application/json
+
+{
+  "title": "AI in Healthcare",
+  "description": "Using AI to improve healthcare services in developing countries"
+}
+
+# Delete an existing research project (replace `{project_id}` with an actual ID)
+DELETE http://localhost:8000/api/projets/{project_id}/
+
+###
+### Publication Endpoints
+###
+
+# List all publications
+GET http://localhost:8000/api/publications/
+
+# Get a specific publication (replace `{publication_id}` with an actual ID)
+GET http://localhost:8000/api/publications/{publication_id}/
+
+# Create a new publication
+POST http://localhost:8000/api/publications/
+Content-Type: application/json
+
+{
+  "title": "Advances in AI",
+  "authors": "John Doe, Jane Smith",
+  "journal": "Journal of Artificial Intelligence",
+  "year": 2023
+}
+
+# Update an existing publication (replace `{publication_id}` with an actual ID)
+PUT http://localhost:8000/api/publications/{publication_id}/
+Content-Type: application/json
+
+{
+  "title": "Advances in AI",
+  "authors": "John Doe, Jane Smith",
+  "journal": "Journal of Artificial Intelligence",
+  "year": 2024
+}
+
+# Delete an existing publication (replace `{publication_id}` with an actual ID)
+DELETE http://localhost:8000/api/publications/{publication_id}/

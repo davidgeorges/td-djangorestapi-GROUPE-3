@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, CircularProgress, Snackbar, SnackbarContent } from '@mui/material';
 import { Delete, Edit,Close as CloseIcon } from '@mui/icons-material';
-import { getPublications, deletePublication } from '../service/api';
+import { getPublications, deletePublication, exportPublicationsToCsv } from '../service/api';
 import { useNavigate } from 'react-router-dom';
+import ExportCSVButton from './ExportCSVButton';
 
 const PublicationList = () => {
   const [publications, setPublications] = useState([]);
@@ -48,6 +49,8 @@ const PublicationList = () => {
   };
 
   return (
+    <div>
+      <ExportCSVButton csvFileName={'publications.csv'} functionToExportCsv={exportPublicationsToCsv} handleSnackbarError={handleSnackbarError}/>
     <List>
       {publications.map((publication) => (
         <ListItem key={publication.id}>
@@ -82,6 +85,7 @@ const PublicationList = () => {
         />
       </Snackbar>
     </List>
+    </div>
   );
 };
 

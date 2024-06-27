@@ -1,6 +1,6 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from .views import ResearcherViewSet, ResearchProjectViewSet, PublicationViewSet, get_token
+from .views import ResearcherViewSet, ResearchProjectViewSet, PublicationViewSet, exportProjetsToCsv, exportPublicationsToCsv, exportResearchersToCsv, get_token
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -26,6 +26,9 @@ router.register(r'publications', PublicationViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('chercheurs/export/csv/', exportResearchersToCsv, name='export-chercheurs-csv'),
+    path('projets/export/csv/', exportProjetsToCsv, name='export-projets-csv'),
+    path('publications/export/csv/', exportPublicationsToCsv, name='export-publications-csv'),
     path('getToken/', get_token, name='get_token'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

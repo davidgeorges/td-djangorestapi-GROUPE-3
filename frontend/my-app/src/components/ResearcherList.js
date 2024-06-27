@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, CircularProgress, Snackbar, SnackbarContent } from '@mui/material';
+import { List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, CircularProgress, Snackbar, SnackbarContent, Button } from '@mui/material';
 import { Delete, Edit, Close as CloseIcon } from '@mui/icons-material';
-import { getChercheurs, deleteChercheur } from '../service/api';
+import { getChercheurs, deleteChercheur, exportCherchersToCsv } from '../service/api';
 import { useNavigate } from 'react-router-dom';
+import ExportCSVButton from './ExportCSVButton';
 
 const ResearcherList = () => {
   const [researchers, setResearchers] = useState([]);
@@ -48,40 +49,43 @@ const ResearcherList = () => {
   };
 
   return (
-    <List>
-      {researchers.map((researcher) => (
-        <ListItem key={researcher.id}>
-          <ListItemText primary={researcher.name} secondary={researcher.specialty} />
-          <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(researcher.id)}>
-              <Edit />
-            </IconButton>
-            <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(researcher.id)}>
-              <Delete />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-       <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <SnackbarContent
-          style={{ backgroundColor: '#d32f2f' }}
-          message={`Error: ${error}`}
-          action={
-            <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          }
-        />
-      </Snackbar>
-    </List>
+    <div>
+      <ExportCSVButton csvFileName={'chercheurs.csv'} functionToExportCsv={exportCherchersToCsv} handleSnackbarError={handleSnackbarError}/>
+      <List>
+        {researchers.map((researcher) => (
+          <ListItem key={researcher.id}>
+            <ListItemText primary={researcher.name} secondary={researcher.specialty} />
+            <ListItemSecondaryAction>
+              <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(researcher.id)}>
+                <Edit />
+              </IconButton>
+              <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(researcher.id)}>
+                <Delete />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        ))}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={openSnackbar}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+        >
+          <SnackbarContent
+            style={{ backgroundColor: '#d32f2f' }}
+            message={`Error: ${error}`}
+            action={
+              <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            }
+          />
+        </Snackbar>
+      </List>
+    </div>
   );
 };
 

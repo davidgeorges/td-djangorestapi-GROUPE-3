@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+import csv
+from django.http import HttpResponse, JsonResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -162,4 +163,71 @@ def get_token(request):
     access_token = AccessToken.for_user(request.user)
     response = JsonResponse({'access': 'Bearer ' + str(access_token)})
     response.set_cookie('access_token', 'Bearer ' + str(access_token), httponly=True)
+    return response
+
+@api_view(['GET'])
+def exportResearchersToCsv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="researchers.csv"'
+
+    researchers = Researcher.objects.all()
+
+    field_names = ['ID', 'Name', 'Specialty']
+
+    writer = csv.writer(response)
+    writer.writerow(field_names)
+
+    for researcher in researchers:
+        writer.writerow([researcher.id, researcher.name, researcher.specialty])
+
+    return response
+
+@api_view(['GET'])
+def exportProjetsToCsv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="projets.csv"'
+
+    projects = ResearchProject.objects.all()
+
+    field_names = ['ID', 'Title', 'Description', 'Start Date', 'Expected End Date', 'Project Leader', 'Researchers']
+
+    writer = csv.writer(response)
+    writer.writerow(field_names)
+
+    for project in projects:
+        researcher_names = ", ".join([researcher.name for researcher in project.researchers.all()])
+        writer.writerow([
+            project.id,
+            project.title,
+            project.description,
+            project.start_date,
+            project.expected_end_date,
+            project.project_leader.name if project.project_leader else "",
+            researcher_names
+        ])
+
+    return response
+
+
+@api_view(['GET'])
+def exportPublicationsToCsv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="publications.csv"'
+
+    publications = Publication.objects.all()
+
+    field_names = ['ID', 'Title', 'Abstract', 'Associated Project', 'Publication Date']
+
+    writer = csv.writer(response)
+    writer.writerow(field_names)
+
+    for publication in publications:
+        writer.writerow([
+            publication.id,
+            publication.title,
+            publication.abstract,
+            publication.associated_project.title,
+            publication.publication_date
+        ])
+
     return response
